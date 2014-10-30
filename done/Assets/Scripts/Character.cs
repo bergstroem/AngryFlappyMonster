@@ -7,10 +7,13 @@ public class Character : MonoBehaviour {
 	public UnityEngine.UI.Text scoreText;
 
 	private int _score;
-
+	private Animator _animator;
+	private ParticleSystem _particleSystem;
 
 	// Use this for initialization
 	void Start () {
+		_particleSystem = GetComponent<ParticleSystem>();
+		_animator = GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
@@ -18,6 +21,7 @@ public class Character : MonoBehaviour {
 		if (Input.GetButtonDown("Fire1")) {
 			this.rigidbody2D.AddForce(Vector2.up * jumpForce);
 			this.audio.Play();
+			_animator.SetTrigger("Fly");
 		}
 	}
 
@@ -29,7 +33,7 @@ public class Character : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D collision) {
 		if (collision.collider.gameObject.tag == "Deadly") {
-			Application.LoadLevel(0);
+			_animator.SetTrigger("Die");
 		}
 	}
 
@@ -42,5 +46,13 @@ public class Character : MonoBehaviour {
 	public void IncreaseScore() {
 		_score++;
 		scoreText.text = _score.ToString();
+	}
+
+	public void StartParticleSystem() {
+		_particleSystem.Play();
+	}
+
+	public void RestartLevel() {
+		Application.LoadLevel(0);
 	}
 }
