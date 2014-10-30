@@ -26,6 +26,7 @@ public class Character : MonoBehaviour {
 		if (Input.GetButtonDown("Fire1")) {
 			this.rigidbody2D.AddForce(Vector2.up * jumpForce);
 			_animator.SetTrigger("Fly");
+			audio.Play();
 		}
 	}
 	
