@@ -1,23 +1,27 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Character : MonoBehaviour {
 	public float jumpForce;
 	public float speed;
 	public UnityEngine.UI.Text scoreText;
+	public UnityEngine.UI.Text lifeText;
+	public int maxLife = 3;
 
 	private int _score;
-
+	private int _life;
 
 	// Use this for initialization
 	void Start () {
-		
+		_life = 0;
+		UpdateLifeText();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetButtonDown("Fire1")) {
 			this.rigidbody2D.AddForce(Vector2.up * jumpForce);
+
 		}
 	}
 
@@ -42,5 +46,16 @@ public class Character : MonoBehaviour {
 	public void IncreaseScore() {
 		_score++;
 		scoreText.text = _score.ToString();
+	}
+
+	void UpdateLifeText() {
+		lifeText.text = _life.ToString();
+	}
+
+	public void AddLife() {
+		if(_life < maxLife) {
+			_life++;
+			UpdateLifeText();
+		}
 	}
 }
