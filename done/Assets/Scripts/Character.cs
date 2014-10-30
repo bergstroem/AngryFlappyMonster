@@ -12,6 +12,8 @@ public class Character : MonoBehaviour {
 	private int _life;
 	private Animator _animator;
 	private ParticleSystem _particleSystem;
+	private float lifeCooldown = 1f;
+	private float lastLifeTimestamp = 0.0f;
 	
 	// Use this for initialization
 	void Start () {
@@ -38,7 +40,7 @@ public class Character : MonoBehaviour {
 	
 	void OnCollisionEnter2D(Collision2D collision) {
 		if (collision.collider.gameObject.tag == "Deadly") {
-			if (_life > 1) { 
+			if (_life > 0) { 
 				_animator.SetTrigger("Damage");
 			}
 			else {
@@ -79,8 +81,11 @@ public class Character : MonoBehaviour {
 	}
 
 	public void RemoveLife() {
-		_life--;
-		UpdateLifeText();
+		if(Time.time - lifeCooldown > lastLifeTimestamp) {
+			lastLifeTimestamp = Time.time;
+			_life--;
+			UpdateLifeText();
+		}
 	}
 }
 
